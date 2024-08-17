@@ -1,0 +1,147 @@
+﻿@model IEnumerable<Proyecto_progra_4.Models.PacientesModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Consulta de pacientes</h2>
+
+<a href="/Pacientes/Create" class="btn btn-success"> Crear nuevo Paciente </a>
+<table class="table">
+
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IdPacientes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NombrePaciente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cedula)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tipo_de_Sangre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdCita)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Eliminado)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPacientes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombrePaciente)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cedula)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo_de_Sangre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdCita)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Eliminado)
+            </td>
+            <td>
+
+                <a href="/Pacientes/Edit?id=@item.IdPacientes" class="btn btn-warning">Editar </a>
+                <button class="btn btn-info" data-toggle="modal" data-target="#detailsModal" onclick="CargarDetalle(@item.IdPacientes)">Detalle</button>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="CargarEliminar(@item.IdPacientes)">Eliminar</button>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detalle de articulo</h5>
+                @*<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>*@
+            </div>
+            <div class="modal-body" id="divDetalle">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!--<b-->@*utton type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detalle de articulo</h5>
+                @*<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>*@
+            </div>
+            <div class="modal-body" id="divDetalle">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!--<b-->@*utton type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Paciente</h5>
+                @*<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>*@
+            </div>
+            <div class="modal-body">
+                Desea Eliminar el Paciente?
+                @Html.Hidden("IdEliminar")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="Eliminar()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function CargarDetalle(id) {
+
+        $("#divDetalle").load("/Pacientes/_Detalle?id=" + id);
+
+        //alert(id);
+    }
+
+    function CargarEliminar(id) {
+        $("#IdEliminar").val(id);
+    }
+    function Eliminar() {
+        $.ajax({
+            type: "POST",
+            url: "/Pacientes/Delete?id=" + $("#IdEliminar").val(),
+            contentType: "application/json; charset=utf-8",
+            dataType: "html",
+            success: function (resultado) {
+                $("#a-" + $("#IdEliminar").val(id)).hide("slow");
+            }
+        });
+    }
+
+</script>      
